@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 using NUnit.Framework;
 using ShortURL.Services.Database.Models;
 using ShortURL.Services.Dto;
@@ -11,11 +12,13 @@ namespace ShortURL.Tests.Services
   public class UrlRedirectionServiceTests : BaseServiceTests
   {
     UrlRedirectionService? _urlRedirectionService;
+    IMemoryCache _memoryCache;
 
     [SetUp]
     public void Init()
     {
-      _urlRedirectionService = new UrlRedirectionService(Db);
+      _memoryCache = new MemoryCache(new MemoryCacheOptions());
+      _urlRedirectionService = new UrlRedirectionService(Db, _memoryCache);
     }
 
     [Test]

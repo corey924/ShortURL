@@ -34,6 +34,7 @@ builder.Services.AddControllersWithViews(options =>
 builder.Services.AddScoped<IApiAuthorize, ApiAuthorizeService>();
 builder.Services.AddScoped<IUrlRedirection, UrlRedirectionService>();
 builder.Services.AddScoped<ILog, LogService>();
+builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 
