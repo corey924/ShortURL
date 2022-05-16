@@ -94,3 +94,6 @@ Response
 * .NET 6.0.2
 * .NET Standard 2.1
 * Entity Framework Core 6.0.2
+* NUnit 3.12.2
+* Swashbuckle.AspNetCore 6.2.3
+* Serilog.AspNetCore 5.0.0
