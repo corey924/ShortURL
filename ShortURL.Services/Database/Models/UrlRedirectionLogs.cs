@@ -10,22 +10,22 @@ namespace ShortURL.Services.Database.Models
     /// <summary>
     /// 轉址代碼
     /// </summary>
-    public string Code { get; set; }
+    public string? Code { get; set; }
 
     /// <summary>
     /// 導向網址
     /// </summary>
-    public string ToUrl { get; set; }
+    public string? ToUrl { get; set; }
 
     /// <summary>
     /// 使用者IP
     /// </summary>
-    public string IpAddress { get; set; }
+    public string? IpAddress { get; set; }
 
     /// <summary>
     /// 裝置資訊
     /// </summary>
-    public string DeviceInfo { get; set; }
+    public string? DeviceInfo { get; set; }
 
     /// <summary>
     /// 建立時間

@@ -13,17 +13,17 @@ namespace ShortURL.Services.Database.Models
     /// <summary>
     /// Useragent
     /// </summary>
-    public string Device { get; set; }
+    public string? Device { get; set; }
 
     /// <summary>
     /// 使用的路徑
     /// </summary>
-    public string Uri { get; set; }
+    public string? Uri { get; set; }
 
     /// <summary>
     /// API內容
     /// </summary>
-    public string Input { get; set; }
+    public string? Input { get; set; }
 
     /// <summary>
     /// IP
@@ -33,7 +33,7 @@ namespace ShortURL.Services.Database.Models
     /// <summary>
     /// 方法
     /// </summary>
-    public string Method { get; set; }
+    public string? Method { get; set; }
 
     /// <summary>
     /// 使用者
