@@ -13,6 +13,11 @@ namespace ShortURL.Services.Services
     private readonly ShortUrlDbContext _db;
     private readonly IMemoryCache _memoryCache;
 
+    /// <summary>
+    /// 隨機代碼位數
+    /// </summary>
+    private const int codeLength = 5;
+
     public UrlRedirectionService(ShortUrlDbContext db, IMemoryCache memoryCache) : base(db)
     {
       this._db = db;
@@ -22,10 +27,10 @@ namespace ShortURL.Services.Services
     public async Task<ApiResponse> CreateUrlRedirectionAsync(CreateUrlRedirectionDto urlRedirection)
     {
       if (!CheckUrl(urlRedirection.ToUrl)) return _apiResult.HttpBadRequest();
-      var ranCode = GetRandomAlphanumeric(5);
+      var ranCode = GetRandomAlphanumeric(codeLength);
       while (await _db.UrlRedirection!.AsNoTracking().AnyAsync(x => x.Code == ranCode))
       {
-        ranCode = GetRandomAlphanumeric(5);
+        ranCode = GetRandomAlphanumeric(codeLength);
       }
       var newUrlRedirection = new UrlRedirection(ranCode, urlRedirection.ToUrl!);
       await _db.UrlRedirection!.AddAsync(newUrlRedirection);
@@ -42,7 +47,7 @@ namespace ShortURL.Services.Services
 
     public async Task<UrlRedirection?> GetUrlRedirectionAsync(GetUrlRedirectionDto urlRedirection)
     {
-      if (string.IsNullOrWhiteSpace(urlRedirection.Code)) return null;
+      if (string.IsNullOrWhiteSpace(urlRedirection.Code) || urlRedirection.Code.Length != codeLength) return null;
       if (_memoryCache.TryGetValue(urlRedirection.Code!, out string toUrl))
       {
         return new UrlRedirection(urlRedirection.Code!, toUrl);
