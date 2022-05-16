@@ -100,3 +100,4 @@ dist_electron/
 
 appsettings.Development.json
 appsettings.Production.json
+logs/
