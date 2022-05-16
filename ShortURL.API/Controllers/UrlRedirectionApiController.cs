@@ -14,17 +14,14 @@ namespace ShortURL.API.Controllers
   public class UrlRedirectionApiController : ControllerBase
   {
     private readonly IUrlRedirection _urlRedirectionService;
-    private readonly ILog _logService;
 
     /// <summary>
     /// 網址導向
     /// </summary>
     /// <param name="urlRedirectionService"></param>
-    /// <param name="logService"></param>
-    public UrlRedirectionApiController(IUrlRedirection urlRedirectionService, ILog logService)
+    public UrlRedirectionApiController(IUrlRedirection urlRedirectionService)
     {
       _urlRedirectionService = urlRedirectionService;
-      _logService = logService;
     }
 
     /// <summary>
@@ -35,13 +32,9 @@ namespace ShortURL.API.Controllers
     [HttpGet, Route("~/{id}")]
     public async Task<IActionResult> GetUrlRedirection(string id)
     {
-      var dto = new GetUrlRedirectionDto
-      {
-        Code = id
-      };
+      var dto = new GetUrlRedirectionDto { Code = id };
 
       var result = await _urlRedirectionService.GetUrlRedirectionAsync(dto);
-      await _logService.UrlRedirectionWriteLogAsync(HttpContext, result ?? new UrlRedirection(id, ""));
       if (result == null) return BadRequest();
 
       return Redirect(result.Url);
