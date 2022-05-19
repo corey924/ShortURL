@@ -1,10 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
 using Serilog;
 using ShortURL.Services.Database.Entity;
 using ShortURL.Services.Interfaces;
 using ShortURL.Services.Services;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,16 +20,12 @@ try
   builder.Services.AddControllers();
   builder.Services.AddEndpointsApiExplorer();
   builder.Services.AddHttpContextAccessor();
-  builder.Services.AddSwaggerGen(c =>
+  builder.Services.AddOpenApiDocument(config =>
   {
-    c.SwaggerDoc("v1", new OpenApiInfo
-    {
-      Title = "ShortURL",
-      Version = "v1"
-    });
-    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    c.IncludeXmlComments(xmlPath);
+    config.DocumentName = "v1";
+    config.Version = "1.0";
+    config.Title = "ShortURL";
+    config.Description = "";
   });
   builder.Services.AddControllersWithViews(options =>
   {
@@ -76,10 +70,11 @@ try
 
   if (app.Environment.IsDevelopment())
   {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
+    app.UseOpenApi();
+    app.UseSwaggerUi3();
+    app.UseReDoc(config =>
     {
-      c.SwaggerEndpoint("/swagger/v1/swagger.json", "ShortURL API");
+      config.Path = "/redoc";
     });
   }
 
