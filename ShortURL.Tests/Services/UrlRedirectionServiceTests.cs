@@ -12,7 +12,7 @@ namespace ShortURL.Tests.Services
   public class UrlRedirectionServiceTests : BaseServiceTests
   {
     UrlRedirectionService? _urlRedirectionService;
-    IMemoryCache _memoryCache;
+    IMemoryCache? _memoryCache;
 
     [SetUp]
     public void Init()

@@ -38,6 +38,11 @@ try
   builder.Services.AddScoped<ILog, LogService>();
   builder.Services.AddMemoryCache();
 
+  builder.Services.AddSpaStaticFiles(configuration =>
+  {
+    configuration.RootPath = "ClientApp";
+  });
+
   var app = builder.Build();
 
   using var scope = app.Services.CreateScope();
@@ -50,13 +55,13 @@ try
 
   app.UseSerilogRequestLogging(options =>
   {
-    // ¦pªG­n¦Û­q°T®§ªº½d¥»®æ¦¡¡A¥i¥H­×§ï³o¸Ì¡A¦ý­×§ï«á¨Ã¤£·|¼vÅTµ²ºc¤Æ°O¿ýªºÄÝ©Ê
+    // ï¿½pï¿½Gï¿½nï¿½Û­qï¿½Tï¿½ï¿½ï¿½ï¿½ï¿½dï¿½ï¿½ï¿½æ¦¡ï¿½Aï¿½iï¿½Hï¿½×§ï¿½oï¿½Ì¡Aï¿½ï¿½ï¿½×§ï¿½ï¿½Ã¤ï¿½ï¿½|ï¿½vï¿½Tï¿½ï¿½ï¿½cï¿½Æ°Oï¿½ï¿½ï¿½ï¿½ï¿½Ý©ï¿½
     // options.MessageTemplate = "Handled {RequestPath}";
 
-    // ¹w³]¿é¥Xªº¬ö¿ýµ¥¯Å¬° Information¡A§A¥i¥H¦b¦¹­×§ï°O¿ýµ¥¯Å
+    // ï¿½wï¿½]ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å¬ï¿½ Informationï¿½Aï¿½Aï¿½iï¿½Hï¿½bï¿½ï¿½ï¿½×§ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     // options.GetLevel = (httpContext, elapsed, ex) => LogEventLevel.Debug;
 
-    // §A¥i¥H±q httpContext ¨ú±o HttpContext ¤U©Ò¦³¥i¥H¨ú±oªº¸ê°T¡I
+    // ï¿½Aï¿½iï¿½Hï¿½q httpContext ï¿½ï¿½ï¿½o HttpContext ï¿½Uï¿½Ò¦ï¿½ï¿½iï¿½Hï¿½ï¿½ï¿½oï¿½ï¿½ï¿½ï¿½Tï¿½I
     options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
     {
       diagnosticContext.Set("IP", httpContext.Connection?.RemoteIpAddress?.ToString());
@@ -81,6 +86,15 @@ try
   if (app.Environment.IsProduction())
   {
     app.UseHttpsRedirection();
+  }
+
+  var enableSetUpWeb = builder.Configuration.GetValue<bool>("AppSettings:EnableSetUpWeb");
+  if (enableSetUpWeb)
+  {
+    app.UseSpa(spa =>
+    {
+      spa.Options.SourcePath = "ClientApp";
+    });
   }
 
   app.Run();
